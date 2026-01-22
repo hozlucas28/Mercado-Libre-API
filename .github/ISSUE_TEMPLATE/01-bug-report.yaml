@@ -1,0 +1,72 @@
+---
+name: Report a Bug
+description: Report a reproducible bug.
+
+labels:
+  - bug
+assignees:
+  - hozlucas28
+
+title: <SHORT TITLE>
+
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report the bug. Please complete the template below as best as you can and add a short title to the report.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Tell us what you expected to happen, and what actually happened.
+      placeholder: I was trying to... and then...
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected-endpoints
+    attributes:
+      label: What endpoints are affected by this bug?
+      description: Write the endpoints affected by the bug.
+      placeholder: |
+        - All endpoints
+        - `/api/v1/publications/*`
+        - `/api/v1/search?query={query}`
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: In which environments did you experience this bug?
+      description: Select the environments where you experienced the bug.
+      options:
+        - Production
+        - Development
+      default: 1
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce-it
+    attributes:
+      label: Steps to reproduce
+      description: Provide a step-by-step list of how to reproduce the bug.
+      placeholder: |
+        1. Send a request to...
+        2. Then, run...
+        3. Finally, observe the bug in...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log
+      description: Paste any relevant log; it will be automatically formatted as Shell code, so you don't need backticks.
+      placeholder: |
+        2025-01-01 00:00:00 [error] Something bad happened!
+      render: shell
+    validations:
+      required: false
