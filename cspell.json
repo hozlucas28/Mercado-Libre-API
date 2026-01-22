@@ -1,0 +1,15 @@
+{
+	"version": "0.2",
+	"language": "es,es-ES,en,en-US,en-GB",
+	"useGitignore": true,
+	"words": [],
+	"ignorePaths": [
+		"**/.devcontainer/devcontainer.json",
+		"**/.air.toml",
+		"**/.dockerignore",
+		"**/.gitignore",
+		"**/.prettierignore",
+		"**/go.mod",
+		"**/go.sum"
+	]
+}
