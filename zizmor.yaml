@@ -1,0 +1,18 @@
+rules:
+  artipacked:
+    ignore:
+      - copyright.yaml
+      - format.yaml
+      - lint-and-test.yaml
+
+  unpinned-uses:
+    config:
+      policies:
+        actions/*: ref-pin
+        oven-sh/setup-bun: ref-pin
+        biomejs/setup-biome: ref-pin
+        golangci/golangci-lint-action: ref-pin
+
+  dangerous-triggers:
+    ignore:
+      - label.yml
