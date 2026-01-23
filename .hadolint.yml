@@ -1,0 +1,5 @@
+---
+trustedRegistries:
+  - ghcr.io
+  - docker.io
+  - mcr.microsoft.com
