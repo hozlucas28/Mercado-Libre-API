@@ -1,0 +1,185 @@
+#! /bin/bash
+
+# Parse options
+options=$(getopt -o "e:h" --long "env:,help" -- "$@")
+
+if [ $? -ne 0 ]; then
+	echo -e "\e[31mAn error occurred on parsing options.\e[0m" >&2
+	exit 1
+fi
+
+eval set -- "$options"
+
+while true; do
+	case "$1" in
+		"-e" | "--env")
+			env="$2"
+			shift 2
+			;;
+		"-h" | "--help")
+			need_help="true"
+			shift 1
+			break
+			;;
+		"--")
+			shift
+			break
+			;;
+		*)
+			echo -e "\e[31mAn internal error occurred!\e[0m" >&2
+			exit 1
+			;;
+		esac
+done
+
+# Show help if needed
+if [[ -n "$need_help" ]]; then
+	printf "Usage: $0 [OPTIONS]...
+
+Perform a health check of the tools needed to this project.
+
+Options:
+	-h, --help     display this help and exit
+"
+	exit 0
+fi
+
+# Change from script directory to project root directory
+cd $(cd "$(dirname "$0")/.." && pwd)
+
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31mFailed to change directory to project root.\e[0m" >&2
+	exit 1
+fi
+
+exit_code=0
+
+go version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Go is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Go installed.\e[0m"
+fi
+
+node --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Node.js is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Node.js installed.\e[0m"
+fi
+
+bun --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Bun is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Bun installed.\e[0m"
+fi
+
+golangci-lint --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[33m- Golangci-lint is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Golangci-lint installed.\e[0m"
+fi
+
+hadolint --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[33m- Hadolint is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Hadolint installed.\e[0m"
+fi
+
+act --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- act is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- act installed.\e[0m"
+fi
+
+gitleaks --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Gitleaks is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Gitleaks installed.\e[0m"
+fi
+
+gh --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- GitHub CLI is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- GitHub CLI installed.\e[0m"
+fi
+
+docker --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Docker is not installed, not found in PATH, or not running.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Docker installed.\e[0m"
+fi
+
+bun run prettier --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Prettier is not installed.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Prettier installed.\e[0m"
+fi
+
+bun run biome --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Biome is not installed.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Biome installed.\e[0m"
+fi
+
+bun run spectral --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Spectral CLI is not installed.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Spectral CLI installed.\e[0m"
+fi
+
+bun run commitlint --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Commitlint CLI is not installed.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Commitlint CLI installed.\e[0m"
+fi
+
+bun run lefthook --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Lefthook is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Lefthook installed.\e[0m"
+fi
+
+openapi-assembly --help >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- OpenAPI Assembly is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- OpenAPI Assembly installed.\e[0m"
+fi
+
+zizmor --version >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+	echo -e "\e[31m- Zizmor is not installed or not found in PATH.\e[0m" >&2
+	exit_code=1
+else
+	echo -e "\e[32m- Zizmor installed.\e[0m"
+fi
+
+exit $exit_code
